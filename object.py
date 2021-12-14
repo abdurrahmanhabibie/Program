@@ -30,8 +30,8 @@ flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
 flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', True, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_string('video', './data/video/nextar.mp4', 'path to input video or set to 0 for webcam')
-flags.DEFINE_string('output', None, 'path to output video')
+flags.DEFINE_string('video', '1', 'path to input video or set to 0 for webcam') #'./data/video/nextar.mp4'
+flags.DEFINE_string('output', './outputs/webcam.avi', 'path to output video')
 flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.5, 'score threshold')
@@ -49,7 +49,7 @@ def main(_argv):
     max_cosine_distance = 0.4
     nn_budget = None
     nms_max_overlap = 1.0
-    detected_obj = [] #np.empty((0,2))
+    detected_obj = np.empty((0,2))
     detected_idx = []
     
     # initialize deep sort
@@ -108,16 +108,10 @@ def main(_argv):
         else:
             print('Video has ended or failed, try a different video format!\n')
             print(detected_obj)
-            
-            # for i in range(len(detected_obj)):
-            #     sys.stdout.write(str(detected_obj[i,0]+'-'))
-            #     sys.stdout.write(str(detected_obj[i,1]))
-            #     flush()
+
             break
         frame_num +=1
         # print('Frame #: ', frame_num)
-        # frame_str = 'Frame #: '+str(frame_num)+'\n'
-        # sys.stdout.write(frame_str)
         frame_size = frame.shape[:2]
         image_data = cv2.resize(frame, (input_size, input_size))
         image_data = image_data / 255.
@@ -231,26 +225,18 @@ def main(_argv):
             cv2.putText(frame, class_name + "-" + str(track.track_id),(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
             if not track.track_id in detected_idx:
                 detected_idx.append(track.track_id)
-                detected_obj.append(class_name)
+                # detected_obj.append(class_name)
                 sys.stdout.write(str(class_name))
                 flush()
-                # if class_name in detected_obj[:,0]:
-                #     # print(True)
-                #     solution = np.where(detected_obj == class_name)
-                #     idx = int(solution[0])
-                #     # listOfCoordinates= list(zip(solution[0], solution[1]))
-                #     # for cord in listOfCoordinates:
-                #     #     print(cord)
-                #     detected_obj[idx][1] = int(detected_obj[idx][1]) + 1
-                #     # print(detected_obj)
-                # else:
-                #     # print(False)
-                #     detected_obj = np.vstack([detected_obj,[class_name,1]])
-                #     # print(detected_obj)
-                
-                # for i in range(len(detected_obj)):
-                #     sys.stdout.write(str(detected_obj[i]+'-'))
-                #     flush()
+                if np.size(detected_obj) == 0:
+                    detected_obj = np.vstack([detected_obj,[class_name,1]])
+                else:
+                    idx = np.where(detected_obj[:,0] == class_name)
+                    if len(idx[0]) == 0:
+                        detected_obj = np.vstack([detected_obj,[class_name,1]])
+                    else:
+                        result = int(idx[0])
+                        detected_obj[result][1] = int(detected_obj[result][1]) + 1
 
         # if enable info flag then print details about each track
             if FLAGS.info:
