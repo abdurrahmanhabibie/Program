@@ -30,12 +30,12 @@ flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
 flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', True, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_string('video', '1', 'path to input video or set to 0 for webcam') #'./data/video/nextar.mp4'
+flags.DEFINE_string('video', '0' , 'path to input video or set to 0 for webcam') #'./data/video/nextar.mp4'
 flags.DEFINE_string('output', './outputs/webcam.avi', 'path to output video')
 flags.DEFINE_string('output_format', 'XVID', 'codec used in VideoWriter when saving video to file')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.5, 'score threshold')
-flags.DEFINE_boolean('dont_show', True, 'dont show video output')
+flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 
@@ -94,7 +94,7 @@ def main(_argv):
         # by default VideoCapture returns float instead of int
         width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = int(vid.get(cv2.CAP_PROP_FPS))
+        fps = 8 #int(vid.get(cv2.CAP_PROP_FPS))
         codec = cv2.VideoWriter_fourcc(*FLAGS.output_format)
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
@@ -112,6 +112,8 @@ def main(_argv):
             break
         frame_num +=1
         # print('Frame #: ', frame_num)
+        # frame_str = 'Frame #: '+str(frame_num)+'\n'
+        # sys.stdout.write(frame_str)
         frame_size = frame.shape[:2]
         image_data = cv2.resize(frame, (input_size, input_size))
         image_data = image_data / 255.
@@ -237,6 +239,10 @@ def main(_argv):
                     else:
                         result = int(idx[0])
                         detected_obj[result][1] = int(detected_obj[result][1]) + 1
+                
+                # for i in range(len(detected_obj)):
+                #     sys.stdout.write(str(detected_obj[i]+'-'))
+                #     flush()
 
         # if enable info flag then print details about each track
             if FLAGS.info:
