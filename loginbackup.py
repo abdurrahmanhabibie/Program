@@ -305,15 +305,15 @@ class Cashier(QMainWindow):
             writer.writeheader()
             for data in data_item:
                 for row in lines:
-                    if row[2] == data[0]:
+                    if data[0] == row[2]:
                         row[5] = int(row[5]) - int(data[1])
-                        
-                    writer.writerow({'product_code': str(row[0]), 
-                                    'product_brand': str(row[1]), 
-                                    'product_name': str(row[2]), 
-                                    'product_price': str(row[3]), 
-                                    'discount': str(row[4]),
-                                    'product_stock': str(row[5])})
+            for row in lines:            
+                writer.writerow({'product_code': str(row[0]), 
+                                'product_brand': str(row[1]), 
+                                'product_name': str(row[2]), 
+                                'product_price': str(row[3]), 
+                                'discount': str(row[4]),
+                                'product_stock': str(row[5])})
         
         self.NewData()
         if self.searchbar.text() != "Search Item Here":
@@ -322,7 +322,12 @@ class Cashier(QMainWindow):
     def print_invoice(self, data, disc):
         now = QDateTime.currentDateTime()
         invoice = now.toString('yyMMdd-HHmm-ss')
-        Axis = 220 +(len(data)*10)
+        num_data = len(data)
+        for row in data:
+            if len(row[0]) > 20:
+                num_data += 1
+        Axis = 230 +(num_data*10)
+        
         # Creating Canvas
         path = "Invoice/{}.pdf".format(invoice)
         c = canvas.Canvas(path,pagesize=(200,Axis),bottomup=0)
@@ -357,20 +362,28 @@ class Cashier(QMainWindow):
         c.line(5,67,195,67)
         c.setFont("Courier-Bold",7)
         count = 0
+        n = 20
         Y = 77
         harga = 0
         diskon = disc
         for row in data:
-            subtotal = int(data[count][1]) * int(data[count][2])
-            
-            c.drawString(10, Y, str(data[count][0]))
-            c.drawRightString(100,Y,str(data[count][1]))
-            c.drawRightString(140,Y,str(data[count][2]))
+            subtotal = int(row[1]) * int(row[2])
+
+            c.drawRightString(110,Y,str(row[1]))
+            c.drawRightString(145,Y,str(row[2]))
             c.drawRightString(190,Y,str(subtotal))
+            if len(str(row[0])) < n:
+                c.drawString(10, Y, str(row[0]))
+            else:
+                name = str(row[0])
+                x = name.split()
+                c.drawString(10, Y, str(x[0]+' '+x[1]))
+                Y += 7
+                c.drawString(10, Y, str(x[2]))
             harga = harga + int(subtotal)
             count +=1
-            Y += 7
-        Y = 77 + (count*7) - 2
+            Y += 10
+        Y += 5
         c.line(90,Y,195,Y)
 
         c.drawString(90,Y+10,"Subtotal :")
