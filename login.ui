@@ -26,13 +26,6 @@
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_7">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="1">
      <widget class="QWidget" name="widget" native="true">
       <property name="minimumSize">
@@ -180,8 +173,8 @@ color: rgb(255, 255, 255);</string>
       <widget class="QLabel" name="error">
        <property name="geometry">
         <rect>
-         <x>360</x>
-         <y>476</y>
+         <x>100</x>
+         <y>470</y>
          <width>341</width>
          <height>20</height>
         </rect>
@@ -237,15 +230,22 @@ font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
       </widget>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_9">
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_8">
       <property name="text">
        <string/>
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="label_8">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_9">
       <property name="text">
        <string/>
       </property>
