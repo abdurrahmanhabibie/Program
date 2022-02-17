@@ -146,6 +146,51 @@ class Cashier(QMainWindow):
             self.btn_scan.setStyleSheet("background-color : rgb(100,151,177);")
             self.p.terminate()
             self.p.kill()
+        # with open('data-cart.csv',mode= 'r') as csv_file:
+        #     data_cart = csv.DictReader(csv_file, delimiter=",")
+        #     line_count = self.data_item.rowCount()
+        #     if len(self.subtotal_num.toPlainText()) > 0:   
+        #         subtotal = int(self.subtotal_num.toPlainText())
+        #         discount = int(self.discount_num.toPlainText())
+        #     else:
+        #         subtotal = 0
+        #         discount = 0
+        #     temp = True
+        #     for data in data_cart:
+        #         with open(r'Data\database-product.csv', mode= 'r') as csv_database:
+        #             data_product = csv.DictReader(csv_database, delimiter=",")
+        #             # if temp ==  False:
+        #             #     for line in range(line_count):
+        #             #         if data["product_name"] == self.data_item.item(line,1).text() and temp == False:
+        #             #             print(self.data_item.item(line,1).text())
+        #             #             print('data udah ada')
+        #             #             qty = int(self.data_item.item(line,2).text()) + int(data['Qty'])
+        #             #             self.data_item.setItem(line, 2, QtWidgets.QTableWidgetItem(str(qty)))
+        #             #             subtotal += int(row['product_price'])*int(data['Qty'])
+        #             #     temp = True
+        #             for row in data_product:
+        #                 if data["product_name"]==row["product_name"]:
+        #                     for line in range(line_count):
+        #                         if row["product_name"] == self.data_item.item(line,1).text():
+        #                             qty = int(self.data_item.item(line,2).text()) + int(data['Qty'])
+        #                             self.data_item.setItem(line, 2, QtWidgets.QTableWidgetItem(str(qty)))
+        #                             subtotal += int(row['product_price'])*int(data['Qty'])
+        #                             discount += int(row['discount'])*int(data['Qty'])
+        #                             temp = False
+        #                     if temp:    
+        #                         self.data_item.insertRow(line_count)
+        #                         self.data_item.setItem(line_count, 1, QtWidgets.QTableWidgetItem(data['product_name']))
+        #                         self.data_item.setItem(line_count, 2, QtWidgets.QTableWidgetItem(data['Qty']))
+        #                         self.data_item.setItem(line_count, 0, QtWidgets.QTableWidgetItem(row['product_code']))
+        #                         self.data_item.setItem(line_count, 3, QtWidgets.QTableWidgetItem(row['discount']))
+        #                         self.data_item.setItem(line_count, 4, QtWidgets.QTableWidgetItem(row['product_price']))    
+        #                         subtotal += int(data['Qty'])*int(row['product_price'])
+        #                         discount += int(data['Qty'])*int(row['discount'])
+        #                         line_count += 1
+                        
+        # # print(subtotal)
+        # total = subtotal - discount
+        # self.display_bill(subtotal,discount,total)
     
     def start_process(self):
         if self.p is None:  # No process running.
@@ -155,6 +200,7 @@ class Cashier(QMainWindow):
             self.p.readyReadStandardError.connect(self.handle_stderr)
             self.p.stateChanged.connect(self.handle_state)
             self.p.finished.connect(self.process_finished)  # Clean up once complete.
+            # self.p.start("python", ['dummy_script.py'])
             self.p.start("python", ['object.py'])
 
     def handle_stderr(self):
@@ -182,6 +228,15 @@ class Cashier(QMainWindow):
         # for data in data_cart:
         with open(r'file\database-product.csv', mode= 'r') as csv_database:
             data_product = csv.DictReader(csv_database, delimiter=",")
+            # if temp ==  False:
+            #     for line in range(line_count):
+            #         if data["product_name"] == self.data_item.item(line,1).text() and temp == False:
+            #             print(self.data_item.item(line,1).text())
+            #             print('data udah ada')
+            #             qty = int(self.data_item.item(line,2).text()) + int(data['Qty'])
+            #             self.data_item.setItem(line, 2, QtWidgets.QTableWidgetItem(str(qty)))
+            #             subtotal += int(row['product_price'])*int(data['Qty'])
+            #     temp = True
             for row in data_product:
                 if obj[0] == row["product_name"]:
                     for line in range(line_count):

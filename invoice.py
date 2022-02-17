@@ -3,20 +3,25 @@ from reportlab.pdfgen import canvas
 import qrcode
 
 data = [
-    ["Pop Mie 39gr", "3", "5000"],
-    ["Tango 130gr", "2", "11000"],
-    ["Velveeta Cheese", "2", "12400"],
+    ['Nextar blueberry', '2', '8000'],
+    ['Oreo Vanila', '4', '2000'],
+    ['Ayam Bawang', '3', '2500'],
 ]
+
+now = QDateTime.currentDateTime()
+
+invoice = now.toString('yyMMdd-HHmm-ss')
 Axis = 220 +(len(data)*10)
 # Creating Canvas
-c = canvas.Canvas("Invoice/invoice.pdf",pagesize=(200,Axis),bottomup=0)
+path = "Invoice/{}.pdf".format(invoice)
+c = canvas.Canvas(path,pagesize=(200,Axis),bottomup=0)
 # Logo Section
 # Setting th origin to (10,40)
 c.translate(10,40)
 # Inverting the scale for getting mirror Image of logo
 c.scale(1,-1)
 # Inserting Logo into the Canvas at required position
-c.drawImage("Data/logo.jpg",0,0,width=50,height=30)
+c.drawImage("file/logo.jpg",0,0,width=50,height=30)
 # Title Section
 # Again Inverting Scale For strings insertion
 c.scale(1,-1)
@@ -38,13 +43,13 @@ c.line(5,45,195,45)
 c.setFont("Helvetica-Bold",6)
 now = QDateTime.currentDateTime()
 c.drawString(5,55,"Date/Time   : " + now.toString(Qt.DefaultLocaleLongDate))
-c.drawString(5,62,"Invoice No. : 0000-000000-0000")
+c.drawString(5,62,"Invoice No. : {}".format(invoice))
 c.line(5,67,195,67)
 c.setFont("Courier-Bold",7)
 count = 0
 Y = 77
 harga = 0
-diskon = 0
+diskon = 1700
 for row in data:
     subtotal = int(data[count][1]) * int(data[count][2])
     

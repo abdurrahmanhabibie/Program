@@ -20,7 +20,7 @@ class Cashier(QMainWindow):
         now = QDateTime.currentDateTime()
         self.clock.setText("  "+now.toString(Qt.DefaultLocaleLongDate))
 
-        with open(r'Data\database-product.csv', mode= 'r') as csv_database:
+        with open(r'file\database-product.csv', mode= 'r') as csv_database:
             data_product = csv.DictReader(csv_database, delimiter=",")
             names = np.empty((0,1), str)
             for row in data_product:
@@ -45,7 +45,7 @@ class Cashier(QMainWindow):
             subtotal = 0
         discount = 0
         if text != "":
-            with open(r'Data\database-product.csv', mode= 'r') as csv_database:
+            with open(r'file\database-product.csv', mode= 'r') as csv_database:
                 data_product = csv.DictReader(csv_database, delimiter=",")
                 for row in data_product:
                     if text == row["product_name"]:
@@ -93,7 +93,7 @@ class Cashier(QMainWindow):
             discount = 0
             temp = True
             for data in data_cart:
-                with open(r'Data\database-product.csv', mode= 'r') as csv_database:
+                with open(r'file\database-product.csv', mode= 'r') as csv_database:
                     data_product = csv.DictReader(csv_database, delimiter=",")
                     # if temp ==  False:
                     #     for line in range(line_count):

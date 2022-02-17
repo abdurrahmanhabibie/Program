@@ -128,7 +128,7 @@ class Cashier(QMainWindow):
                     if text == row["product_name"]:
                         temp = False
                         if self.data_item.rowCount()==0:
-                                print("cart is empty")
+                                print("cart is empty,  ")
                                 self.data_item.insertRow(line_count)
                                 self.data_item.setItem(line_count, 1, QtWidgets.QTableWidgetItem(row['product_name']))
                                 self.data_item.setItem(line_count, 2, QtWidgets.QTableWidgetItem("1"))
@@ -288,7 +288,7 @@ class Cashier(QMainWindow):
                                 self.data_item.item(row,2).text(),
                                 self.data_item.item(row,4).text()])
                 discount += int(self.data_item.item(row,3).text()) * int(self.data_item.item(row,2).text())
-                # print(data_item)
+                print(data_item)
             writer.writerow({
                             'invoice': invoice, 
                             'Date': now.toString(Qt.DefaultLocaleLongDate), 
@@ -311,8 +311,8 @@ class Cashier(QMainWindow):
                 writer.writerow({'product_code': str(row[0]), 
                                 'product_brand': str(row[1]), 
                                 'product_name': str(row[2]), 
-                                'product_price': str(row[3]), 
-                                'discount': str(row[4]),
+                                'discount': str(row[3]), 
+                                'product_price': str(row[4]),
                                 'product_stock': str(row[5])})
         
         self.NewData()
@@ -378,8 +378,6 @@ class Cashier(QMainWindow):
                 name = str(row[0])
                 x = name.split()
                 c.drawString(10, Y, str(x[0]+' '+x[1]))
-                Y += 7
-                c.drawString(10, Y, str(x[2]))
             harga = harga + int(subtotal)
             count +=1
             Y += 10
